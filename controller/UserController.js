@@ -249,7 +249,9 @@ async function MinusQuantity(req,res){
    
         const find=await User.findOne({_id:userId,'cart.productId':productId})
         const obj= find.cart.find(item=>item.productId.toString()===productId)
+       if(obj.quantity>1){
         obj.quantity-=1
+       }
         await find.save()
       return res.status(200).send({msg:"product already exist in cart"})
     }
