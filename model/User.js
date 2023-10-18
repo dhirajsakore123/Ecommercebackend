@@ -16,6 +16,8 @@ const User=new schema({
         },
         quantity:{type:Number}
     }]
+    ,
+    ordered:[]
 })
 
 module.exports=mongoose.model('User',User)

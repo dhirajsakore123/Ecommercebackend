@@ -1,9 +1,11 @@
 
-const {catogary,Id,catogary2,addNewProduct,search,register,loginUser,addtocart,cart,Allproducts,RemoveCartItem,PlusQuantity,MinusQuantity} = require("../controller/UserController")
+const {catogary,Id,catogary2,addNewProduct,search,register,loginUser,addtocart,cart,Allproducts,RemoveCartItem,PlusQuantity,MinusQuantity,RazorPay,PlaceOrder} = require("../controller/UserController")
 
 const route=require("express").Router()
 
 route.post("/register",register)
+route.post("/placeorder",PlaceOrder)
+route.post("/createorder",RazorPay)
 route.post("/addtocart",addtocart)
 route.post("/cart",cart)
 route.post("/login",loginUser)

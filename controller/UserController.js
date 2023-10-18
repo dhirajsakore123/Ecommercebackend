@@ -3,6 +3,39 @@ const product = require("../model/ProductModel")
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const User=require('../model/User')
+const Razorpay = require('razorpay')
+
+const razorpay = new Razorpay({
+    key_id: 'rzp_test_8gAAcZx74kP2Zm',
+    key_secret: 'kBRDHOma9uI4kGttNxfyxFYd',
+})
+
+
+async function RazorPay(req, res) {
+
+    const amount=req.body.amount
+
+    const options = {
+        amount:amount,
+        currency: 'INR',
+        receipt: 'dhirajsakore@gmail.com',
+      
+    }
+
+    try {
+        const response = await razorpay.orders.create(options);
+        res.send({
+            success:true,
+            msg:'Order Created',
+            order_id:response.id,
+            amount:options.amount,
+            key_id:'rzp_test_8gAAcZx74kP2Zm'
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+}
 
 async function register(req, res) {
     try {
@@ -262,6 +295,25 @@ async function MinusQuantity(req,res){
 }
 
 
+async function PlaceOrder(req,res){
+    try{
+        const userId=req.body.userId;  
+       const user= await User.findById(userId)
+         console.log(user.cart);
+       user.ordered.push(...user.cart)
+       user.cart=[]
+       await user.save()
+     
+        res.send({user:user})
+
+       }
+    catch(err){
+        res.send('error occured' , err)
+    }
+
+}
 
 
-module.exports={catogary,Id,catogary2,addNewProduct,search,register,loginUser,addtocart,cart,Allproducts,RemoveCartItem,PlusQuantity,MinusQuantity}
+
+
+module.exports={catogary,Id,catogary2,addNewProduct,search,register,loginUser,addtocart,cart,Allproducts,RemoveCartItem,PlusQuantity,MinusQuantity,RazorPay,PlaceOrder}
