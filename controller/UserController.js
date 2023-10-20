@@ -48,9 +48,10 @@ async function register(req, res) {
         const hashedPassword = await bcrypt.hash(temp.password, salt)
        
         //create user
+     
         const user = await User.create({ firstname:temp.firstname, lastname: temp.lastname, email: temp.email, password: `${hashedPassword}` })
-        
-        res.status(200).send({msg:"user register Sucessfully" ,user:user})
+        const token = jwt.sign({ _id: user._id }, "secret", { expiresIn: "24h" })
+        res.status(200).send({msg:"user register Sucessfully" ,user:user ,token:token})
 
 
     }
