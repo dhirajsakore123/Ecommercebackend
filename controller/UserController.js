@@ -28,7 +28,7 @@ async function RazorPay(req, res) {
             success:true,
             msg:'Order Created',
             order_id:response.id,
-            amount:options.amount,
+            amount:options.amount*100,
             key_id:'rzp_test_8gAAcZx74kP2Zm'
         });
     } catch (error) {
